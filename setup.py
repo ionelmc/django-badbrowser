@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 
-VERSION = __import__('django_badbrowser').__version__
+VERSION = __import__('django_badbrowser').VERSION
 
 import os
 long_description = open(os.path.join(os.path.dirname(__file__), 'README.textime')).read()
