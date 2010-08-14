@@ -4,14 +4,16 @@ from pkg_resources import parse_version
 VERSION = "0.1.0"
 
 def check_user_agent(user_agent, requirements):
-	
 	if not user_agent:
 		return True
 	
 	if not requirements:
 		return True
 	
-	parsed = httpagentparser.detect(user_agent)
+	if type(user_agent) == httpagentparser.Result:
+		parsed = user_agent
+	else:
+		parsed = httpagentparser.detect(user_agent)
 	
 	if "browser" not in parsed:
 		return True

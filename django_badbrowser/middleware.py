@@ -1,3 +1,5 @@
+import httpagentparser
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -14,20 +16,28 @@ class BrowserSupportDetection(object):
 			return request.delete_cookie("badbrowser_ignore")
 	
 	def process_request(self, request):
-		
-		if not hasattr(settings, "BADBROWSER_REQUIREMENTS"):
-			return None # no requirements have been setup
+		if request.path.startswith(settings.MEDIA_URL):
+			# no need to test media requests (which sometimes come via 
+			# via django during development)
+			return None
 		
 		if "HTTP_USER_AGENT" not in request.META:
 			return None
+		
+		user_agent = request.META["HTTP_USER_AGENT"]
+		parsed_user_agent = httpagentparser.detect(user_agent)
+		
+		# Set the browser information on the request object
+		request.browser = parsed_user_agent
+		
+		if not hasattr(settings, "BADBROWSER_REQUIREMENTS"):
+			return None # no requirements have been setup
 		
 		if request.path == reverse("django-badbrowser-ignore"):
 			# Allow through any requests for the ignore page
 			return None
 		
-		user_agent = request.META["HTTP_USER_AGENT"]
-		
-		if check_user_agent(user_agent, settings.BADBROWSER_REQUIREMENTS):
+		if check_user_agent(parsed_user_agent, settings.BADBROWSER_REQUIREMENTS):
 			self._clear_cookie(request)
 			return None # continue as normal
 		else:

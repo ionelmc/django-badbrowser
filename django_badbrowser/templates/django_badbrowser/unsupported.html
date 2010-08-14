@@ -1,5 +1,120 @@
-<p>Your browser is not supported</p>
+{% extends "django_badbrowser/base.html" %}
 
-<p>You may <a href="{% url django-badbrowser-ignore %}?next={{ next|urlencode }}">ignore this warning</a> at your own peril.</p>
+{% block extra_head %}
+<style type="text/css" media="screen">
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, font, img, ins, kbd, q, s, samp,
+small, strike, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
 
+html {
+	height: 100%;
+}
+
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+	height: 100%;
+	font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+}
+ol, ul {
+	list-style: none;
+}
+
+#browser-unsupported {
+	background-color: #F5F5F5;
+	width: 550px;
+	margin: 0 auto 0 auto;
+	border: 1px solid #EAEAEA;
+	height: 100%;
+}
+#browser_list {
+	text-align: center;
+	height: 120px;
+	margin-top: 2em;
+	margin-bottom: 1em;
+}
+#browser_list li {
+	float: left;
+	width: 100px;
+	height: 100px;
+}
+#wrapper {
+	margin-top: 100px;
+	padding: 10px;
+}
+h1 {
+	font-size: 1.5em;
+	font-family: "Palatino Linotype", Palatino, Palladio, "URW Palladio L", "Book Antiqua", Baskerville, "Bookman Old Style", "Bitstream Charter", "Nimbus Roman No9 L", Garamond, "Apple Garamond", "ITC Garamond Narrow", "New Century Schoolbook", "Century Schoolbook", "Century Schoolbook L", Georgia, serif;
+	margin-bottom: 1em;
+}
+p {
+	margin-bottom: 1em;
+}
+#ignore {
+	font-size: 0.8em;
+	font-style: italic;
+	color: #666;
+	margin-top: 4em;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="browser-unsupported">
+	<div id="wrapper">
+		<h1>Unsupported web browser</h1>
+		<p>
+			Thank you much for coming by, but unfortunately we 
+			are unable to support your web browser.
+		</p>
+	
+		<p>
+			Why not try one of these browsers?
+		</p>
+	
+		<ul id="browser_list">
+			<li>
+				
+				<a href="http://firefox.com"><img src="{{ MEDIA_URL }}django-badbrowser/browser_chrome.gif"></a>
+				<a href="http://firefox.com"><span>Chrome</span></a>
+			</li>
+			<li>
+				<a href="http://www.google.com/chrome"><img src="{{ MEDIA_URL }}django-badbrowser/browser_firefox.gif"></a>
+				<a href="http://www.google.com/chrome"><span>Firefox</span></a>
+			</li>
+			<li>
+				<a href="http://www.apple.com/safari/download/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_safari.gif"></a>
+				<a href="http://www.apple.com/safari/download/"><span>Safari</span></a>
+			</li>
+			<li>
+				<a href="http://www.opera.com/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_opera.gif"></a>
+				<a href="http://www.opera.com/"><span>Opera</span></a>
+			</li>
+			<li>
+				<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_ie.gif"></a>
+				<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><span>Internet Explorer</span></a>
+			</li>
+		</ul>
+	
+		<p id="ignore">You may <a href="{% url django-badbrowser-ignore %}?next={{ next|urlencode }}">ignore this warning</a> at your own peril.</p>
+	</div>
+	
+</div>
 <!-- test data: unsupported browser -->
+{% endblock %}
