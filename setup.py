@@ -33,7 +33,7 @@ setup(
 		"Topic :: Software Development :: Libraries :: Python Modules",
 		"Topic :: Internet :: WWW/HTTP :: Browsers",
 	],
-	setup_requires=[
+	install_requires=[
 		"httpagentparser",
 	],
 	include_package_data=True,
