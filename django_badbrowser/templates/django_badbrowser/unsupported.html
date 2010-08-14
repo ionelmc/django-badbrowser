@@ -78,6 +78,7 @@ p {
 {% block content %}
 <div id="browser-unsupported">
 	<div id="wrapper">
+		{% block unsupported_message %}
 		<h1>Unsupported web browser</h1>
 		<p>
 			Thank you much for coming by, but unfortunately we 
@@ -87,7 +88,9 @@ p {
 		<p>
 			We recommend the latest version of any of these browsers:
 		</p>
-	
+		{% endblock %}
+		
+		{% block unsupported_browsers %}
 		<ul id="browser_list">
 			{% for browser in suggest %}
 				{% if browser|lower == "chrome" %}
@@ -126,8 +129,11 @@ p {
 				{% endif %}
 			{% endfor %}
 		</ul>
-	
+		{% endblock %}
+		
+		{% block unsupported_ignore %}
 		<p id="ignore">You may <a href="{% url django-badbrowser-ignore %}?next={{ next|urlencode }}">ignore this warning</a> at your own peril.</p>
+		{% endblock %}
 	</div>
 	
 </div>
