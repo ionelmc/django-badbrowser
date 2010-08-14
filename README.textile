@@ -1,0 +1,42 @@
+h1. django-badbrowser readme
+
+h2. Installation
+
+To install django-badbrowser:
+
+# Install with easy_install/pip/whatever
+# Add @django_badbrowser.middleware.BrowserSupportDetection@ to the @MIDDLEWARE_CLASSES@ setting
+# Add @django_badbrowser@ to your @INSTALLED_APPS@ setting
+# Specify the @BADBROWSER_REQUIREMENTS@ setting (see below for details and additional settings)
+# Copy/sym-link the @django_badbrowser/media/django-badbrowser/@ directory into your media directory
+
+h2. Config options
+
+h3. BADBROWSER_REQUIREMENTS
+
+A list of any specific browser restrictions. Browsers listed here with versions lower than the specified version numbers will be shown the "Unsupported web browser" message. Any browsers not listed here will be free to access the site as normal, as will any clients which do not specify a user agent.
+
+Example:
+
+<pre>BADBROWSER_REQUIREMENTS = (
+	("firefox", "3.0"),
+	("chrome", "3.0"),
+	("microsoft internet explorer", "8"),
+	("opera", "10"),
+)</pre>
+
+h3. BADBROWSER_SUGGEST
+
+A list of browsers to suggest to the user on the "Unsupported web browser" page.
+
+Example:
+
+<pre>BADBROWSER_SUGGEST = ("firefox", "chrome", "safari", "opera", "microsoft internet explorer")</pre>
+
+h3. BADBROWSER_BASE_TEMPLATE
+
+The base template which should be extended in the rendering of the "Unsupported web browser" page. This page will probably need to have blocks for "extra_head" (within the head tag) and "content" (within the body tag)
+
+Example:
+
+<pre>BADBROWSER_BASE_TEMPLATE = "myapp/base.html"</pre>
