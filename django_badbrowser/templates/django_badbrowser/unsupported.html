@@ -85,31 +85,46 @@ p {
 		</p>
 	
 		<p>
-			Why not try one of these browsers?
+			We recommend the latest version of any of these browsers:
 		</p>
 	
 		<ul id="browser_list">
-			<li>
+			{% for browser in suggest %}
+				{% if browser|lower == "chrome" %}
+				<li>
+					<a href="http://www.google.com/chrome"><img src="{{ MEDIA_URL }}django-badbrowser/browser_chrome.gif"></a>
+					<a href="http://www.google.com/chrome"><span>Chrome</span></a>
+				</li>
+				{% endif %}
 				
-				<a href="http://firefox.com"><img src="{{ MEDIA_URL }}django-badbrowser/browser_chrome.gif"></a>
-				<a href="http://firefox.com"><span>Chrome</span></a>
-			</li>
-			<li>
-				<a href="http://www.google.com/chrome"><img src="{{ MEDIA_URL }}django-badbrowser/browser_firefox.gif"></a>
-				<a href="http://www.google.com/chrome"><span>Firefox</span></a>
-			</li>
-			<li>
-				<a href="http://www.apple.com/safari/download/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_safari.gif"></a>
-				<a href="http://www.apple.com/safari/download/"><span>Safari</span></a>
-			</li>
-			<li>
-				<a href="http://www.opera.com/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_opera.gif"></a>
-				<a href="http://www.opera.com/"><span>Opera</span></a>
-			</li>
-			<li>
-				<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_ie.gif"></a>
-				<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><span>Internet Explorer</span></a>
-			</li>
+				{% if browser|lower == "firefox" %}
+				<li>
+					<a href="http://firefox.com"><img src="{{ MEDIA_URL }}django-badbrowser/browser_firefox.gif"></a>
+					<a href="http://firefox.com"><span>Firefox</span></a>
+				</li>
+				{% endif %}
+				
+				{% if browser|lower == "safari" %}
+				<li>
+					<a href="http://www.apple.com/safari/download/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_safari.gif"></a>
+					<a href="http://www.apple.com/safari/download/"><span>Safari</span></a>
+				</li>
+				{% endif %}
+				
+				{% if browser|lower == "opera" %}
+				<li>
+					<a href="http://www.opera.com/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_opera.gif"></a>
+					<a href="http://www.opera.com/"><span>Opera</span></a>
+				</li>
+				{% endif %}
+				
+				{% if browser|lower == "ie" or browser|lower == "internet explorer" or browser|lower == "microsoft internet explorer" %}
+				<li>
+					<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><img src="{{ MEDIA_URL }}django-badbrowser/browser_ie.gif"></a>
+					<a href="http://www.microsoft.com/uk/windows/internet-explorer/"><span>Internet Explorer</span></a>
+				</li>
+				{% endif %}
+			{% endfor %}
 		</ul>
 	
 		<p id="ignore">You may <a href="{% url django-badbrowser-ignore %}?next={{ next|urlencode }}">ignore this warning</a> at your own peril.</p>
