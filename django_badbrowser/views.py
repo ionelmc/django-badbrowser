@@ -10,10 +10,16 @@ def unsupported(request):
 	else:
 		suggest = ("firefox",)
 	
+	if hasattr(settings, "BADBROWSER_BASE_TEMPLATE"):
+		base_template = settings.BADBROWSER_BASE_TEMPLATE
+	else:
+		base_template = "django_badbrowser/base.html"
+	
 	context = {
 		"next": request.path,
 		"suggest": suggest,
 		"MEDIA_URL": settings.MEDIA_URL,
+		"base_template": base_template
 	}
 	
 	return render_to_response("django_badbrowser/unsupported.html", context)
