@@ -69,12 +69,17 @@ class IgnoreViewTest(TestCase):
 	"""Testing for the ignore view"""
 	
 	def test_ignore(self):
-		"""docstring for test_ignore"""
 		c = Client()
 		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
 		self.assertTrue("badbrowser_ignore" in c.cookies)
 		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
 	
+class UnsupportedViewTest(TestCase):
+	
+	def test_simple(self):
+		c = Client()
+		response = c.get(reverse("django-badbrowser-unsupported"))
+		self.assertContains(response, "<!-- test data: unsupported browser -->")
 
 class CheckUserAgentTest(TestCase):
 	
@@ -89,6 +94,16 @@ class CheckUserAgentTest(TestCase):
 		user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.126 Safari/533.4"
 		requirements = (("Chrome", "5.0.175.126"),)
 		self.assertTrue(check_user_agent(user_agent, requirements))
+	
+	def test_valid_dict(self):
+		user_agent = {'flavor': {'version': 'X 10_6_4', 'name': 'MacOS'}, 'os': {'name': 'Macintosh'}, 'browser': {'version': '5.0.375.126', 'name': 'Chrome'}}
+		requirements = (("Chrome", "5.0.175.126"),)
+		self.assertTrue(check_user_agent(user_agent, requirements))
+	
+	def test_old_major_version_dict(self):
+		user_agent = {'flavor': {'version': 'X 10_6_4', 'name': 'MacOS'}, 'os': {'name': 'Macintosh'}, 'browser': {'version': '4.0.375.126', 'name': 'Chrome'}}
+		requirements = (("Chrome", "5.0.175.126"),)
+		self.assertFalse(check_user_agent(user_agent, requirements))
 	
 	def test_old_major_version(self):
 		user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/4.0.375.126 Safari/533.4"
