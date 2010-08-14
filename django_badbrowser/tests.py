@@ -3,6 +3,8 @@ import os
 from django.test import TestCase
 from django.conf import settings
 from django.http import HttpRequest
+from django.test.client import Client
+from django.core.urlresolvers import reverse
 
 from django_badbrowser import check_user_agent
 from django_badbrowser.middleware import BrowserSupportDetection
@@ -27,7 +29,21 @@ class BrowserSupportDetectionTest(TestCase):
 		request.META["HTTP_USER_AGENT"] = ua
 		
 		middleware = BrowserSupportDetection()
-		self.assertNotEqual(middleware.process_request(request), None)
+		response = middleware.process_request(request)
+		self.assertNotEqual(response, None)
+		self.assertContains(response, "<!-- test data: unsupported browser -->")
+	
+	def test_old_major_version_ignore(self):
+		ua = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/4.0.375.126 Safari/533.4"
+		settings.BADBROWSER_REQUIREMENTS = (("Chrome", "5.0.175.126"),)
+		
+		request = HttpRequest()
+		request.COOKIES["badbrowser_ignore"] = True
+		request.META["HTTP_USER_AGENT"] = ua
+		
+		middleware = BrowserSupportDetection()
+		response = middleware.process_request(request)
+		self.assertEqual(response, None)
 	
 	def test_no_user_agent(self):
 		settings.BADBROWSER_REQUIREMENTS = (("Chrome", "5.0.175.126"),)
@@ -47,6 +63,17 @@ class BrowserSupportDetectionTest(TestCase):
 		
 		middleware = BrowserSupportDetection()
 		self.assertEqual(middleware.process_request(request), None)
+	
+
+class IgnoreViewTest(TestCase):
+	"""Testing for the ignore view"""
+	
+	def test_ignore(self):
+		"""docstring for test_ignore"""
+		c = Client()
+		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
+		self.assertTrue("badbrowser_ignore" in c.cookies)
+		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
 	
 
 class CheckUserAgentTest(TestCase):
