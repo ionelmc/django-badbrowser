@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 
-VERSION = __import__("django_badbrowser").VERSION
+VERSION = "0.1.0" # also in __init__.py
 
 import os
 long_description = open(os.path.join(os.path.dirname(__file__), "README.textile")).read()
