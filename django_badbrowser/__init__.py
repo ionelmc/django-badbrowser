@@ -28,6 +28,8 @@ def check_user_agent(user_agent, requirements):
 	user_browser_version = parsed["browser"]["version"]
 	
 	for browser, browser_version in requirements:
+		if not browser_version:
+			return False
 		if user_browser == browser.lower():
 			if cmp(parse_version(browser_version), parse_version(user_browser_version)) <= 0:
 				return True

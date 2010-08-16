@@ -100,6 +100,11 @@ class CheckUserAgentTest(TestCase):
 		requirements = (("Chrome", "5.0.175.126"),)
 		self.assertTrue(check_user_agent(user_agent, requirements))
 	
+	def test_requirement_version_none(self):
+		user_agent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.126 Safari/533.4"
+		requirements = (("Chrome", None),)
+		self.assertFalse(check_user_agent(user_agent, requirements))
+	
 	def test_old_major_version_dict(self):
 		user_agent = {'flavor': {'version': 'X 10_6_4', 'name': 'MacOS'}, 'os': {'name': 'Macintosh'}, 'browser': {'version': '4.0.375.126', 'name': 'Chrome'}}
 		requirements = (("Chrome", "5.0.175.126"),)

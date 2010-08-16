@@ -22,7 +22,7 @@ Example:
 	("firefox", "3.0"),
 	("chrome", "3.0"),
 	("microsoft internet explorer", "8"),
-	("opera", "10"),
+	("opera", None), # None indicates no support for the given browser, whatever the version
 )</pre>
 
 h3. BADBROWSER_SUGGEST
