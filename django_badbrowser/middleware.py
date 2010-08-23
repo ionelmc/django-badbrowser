@@ -11,11 +11,9 @@ class BrowserSupportDetection(object):
 		"""Has the user forced ignoring the browser warning"""
 		return "badbrowser_ignore" in request.COOKIES and request.COOKIES["badbrowser_ignore"]
 	
-	def _clear_cookie(self, request):
-		if self._user_ignored_warning(request):
-			return request.delete_cookie("badbrowser_ignore")
-	
 	def process_request(self, request):
+		self._clear_cookie = False
+		
 		if request.path.startswith(settings.MEDIA_URL):
 			# no need to test media requests (which sometimes come via 
 			# via django during development)
@@ -38,7 +36,7 @@ class BrowserSupportDetection(object):
 			return None
 		
 		if check_user_agent(parsed_user_agent, settings.BADBROWSER_REQUIREMENTS):
-			self._clear_cookie(request)
+			self._clear_cookie = True
 			return None # continue as normal
 		else:
 			if self._user_ignored_warning(request):
@@ -46,8 +44,11 @@ class BrowserSupportDetection(object):
 			
 			from django_badbrowser.views import unsupported
 			return unsupported(request)
-		
 	
+	def process_response(self, request, response):
+		if self._clear_cookie:
+			response.delete_cookie("badbrowser_ignore")
+		return response
 	
 
 

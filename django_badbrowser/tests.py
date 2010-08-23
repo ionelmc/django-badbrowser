@@ -69,17 +69,47 @@ class IgnoreViewTest(TestCase):
 	"""Testing for the ignore view"""
 	
 	def test_ignore(self):
+		settings.BADBROWSER_REQUIREMENTS = (("Firefox", "3"),)
+		
 		c = Client()
 		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
 		self.assertTrue("badbrowser_ignore" in c.cookies)
 		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
 	
+	def test_ignore_then_ok_browser(self):
+		settings.BADBROWSER_REQUIREMENTS = (("Firefox", "3"),)
+		
+		c = Client()
+		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
+		self.assertTrue("badbrowser_ignore" in c.cookies)
+		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
+		
+		response = c.get("/", HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/3.0")
+		self.assertFalse(bool(c.cookies["badbrowser_ignore"].value))
+	
+	def test_ignore_then_ok_then_ignore(self):
+		settings.BADBROWSER_REQUIREMENTS = (("Firefox", "3"),)
+		
+		c = Client()
+		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
+		self.assertTrue("badbrowser_ignore" in c.cookies)
+		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
+		
+		response = c.get("/", HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/3.0")
+		self.assertFalse(bool(c.cookies["badbrowser_ignore"].value))
+		
+		response = c.get(reverse("django-badbrowser-ignore"), HTTP_USER_AGENT="Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.5) Gecko/20050814 Firefox/1.0")
+		self.assertTrue("badbrowser_ignore" in c.cookies)
+		self.assertTrue(bool(c.cookies["badbrowser_ignore"].value))
+	
+
 class UnsupportedViewTest(TestCase):
 	
 	def test_simple(self):
 		c = Client()
 		response = c.get(reverse("django-badbrowser-unsupported"))
 		self.assertContains(response, "<!-- test data: unsupported browser -->")
+	
 
 class CheckUserAgentTest(TestCase):
 	
