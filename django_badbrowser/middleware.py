@@ -46,7 +46,7 @@ class BrowserSupportDetection(object):
 			return unsupported(request)
 	
 	def process_response(self, request, response):
-		if self._clear_cookie:
+		if hasattr(self, "_clear_cookie") and self._clear_cookie:
 			response.delete_cookie("badbrowser_ignore")
 		return response
 	
