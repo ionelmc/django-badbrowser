@@ -5,10 +5,10 @@ h2. Installation
 To install django-badbrowser:
 
 # Install with easy_install/pip/whatever
-# Add @django_badbrowser.middleware.BrowserSupportDetection@ to the @MIDDLEWARE_CLASSES@ setting
-# Add @django_badbrowser@ to your @INSTALLED_APPS@ setting
+# Add @badbrowser.middleware.BrowserSupportDetection@ to the @MIDDLEWARE_CLASSES@ setting
+# Add @badbrowser@ to your @INSTALLED_APPS@ setting
 # Specify the @BADBROWSER_REQUIREMENTS@ setting (see below for details and additional settings)
-# Copy/sym-link the @django_badbrowser/media/django-badbrowser/@ directory into your media directory
+# Copy/sym-link the @badbrowser/media/django-badbrowser/@ directory into your media directory
 
 h2. Config options
 

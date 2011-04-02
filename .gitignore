@@ -31,3 +31,5 @@ log
 .DS_Store
 
 
+build
+dist

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-from distutils.core import setup
-
+from setuptools import setup, find_packages
 
 VERSION = "0.1.0" # also in __init__.py
 
@@ -19,7 +18,7 @@ setup(
 	platforms=["any"],
 	license="MIT",
 	packages=[
-		"django_badbrowser",
+		"badbrowser",
 	],
 	classifiers=[
 		"Development Status :: 4 - Beta",
@@ -36,5 +35,6 @@ setup(
 	install_requires=[
 		"httpagentparser",
 	],
+	zip_safe=False,
 	include_package_data=True,
 )
