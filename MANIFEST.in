@@ -1,3 +1,4 @@
 graft badbrowser/media
 graft badbrowser/templates
 graft badbrowser/uastrings
+graft badbrowser/locale
