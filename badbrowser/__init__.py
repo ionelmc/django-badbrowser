@@ -31,7 +31,7 @@ def check_user_agent(user_agent, requirements):
         if user_browser == browser.lower():
             if not browser_version:
                 return False
-            if cmp(parse_version(browser_version), parse_version(user_browser_version)) <= 0:
-                return True
+            if parse_version(browser_version) > parse_version(user_browser_version):
+                return False
     
     return True
